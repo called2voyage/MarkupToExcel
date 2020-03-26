@@ -40,23 +40,22 @@ End Sub
 
 Sub ColumnsToMarkup()
 
-Dim markup As String
-markup = ""
+Dim markup() As String
+ReDim markup(Selection.Rows.Count)
 
 For i = 1 To Selection.Rows.Count
    For j = 1 To Selection.Columns.Count
       If j = 1 Then
-         markup = markup & Worksheets("Sheet1").Cells(i, j).Value
+         markup(i) = Worksheets("Sheet1").Cells(i, j).Value
       Else
-         markup = markup & "|" & Worksheets("Sheet1").Cells(i, j).Value
+         markup(i) = markup(i) & "|" & Worksheets("Sheet1").Cells(i, j).Value
       End If
    Next j
-   If i <> Selection.Rows.Count Then
-      markup = markup & vbNewLine
-   End If
 Next i
 
 Selection.Clear
-Worksheets("Sheet1").Range("A1").Value = markup
+For i = 1 To Selection.Rows.Count
+    Worksheets("Sheet1").Cells(i, 1).Value = markup(i)
+Next i
 
 End Sub
